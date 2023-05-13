@@ -97,8 +97,9 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback {
 
         // Set customer name from database
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
         String custEmail = user.getEmail();
-        Log.d("Customer Email", custEmail);
+        Timber.tag("Customer Email").d(custEmail);
 
         Firestore firestore = new Firestore();
         firestore.getUserInfo(custEmail, new Firestore.OnGetDataListener() {
