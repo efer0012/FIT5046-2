@@ -19,12 +19,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.befit.database.Firestore;
 import com.example.befit.entity.Customer;
 import com.example.befit.viewmodel.CustomerViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.Calendar;
 
@@ -67,7 +70,6 @@ public class SignupActivity extends AppCompatActivity {
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                //TODO: prompt?
             }
         });
 
@@ -111,7 +113,7 @@ public class SignupActivity extends AppCompatActivity {
                     toastMsg("Empty Password");
                 } else if (password.length() < 8) {
                     toastMsg("Password must be at least 8 chars");
-                } //TODO: more restrict on password?
+                }
 
                 // validate first name and last name
                 else if (first_name.isEmpty()){
@@ -144,11 +146,12 @@ public class SignupActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
                     toastMsg("Registration Successful");
-                    // TODO: insert new Customer into Room, height default 0
-                    //System.out.println("!!!!!!!!!!!!!!!" + email + first_name + last_name + gender + dob + address);
                     Customer customer = new Customer(email, first_name, last_name, gender, dob, address, 0);
+                    // add into Room database
                     customerViewModel.insertCustomer(customer);
-
+                    // add into Firestore
+                    Firestore firestore = new Firestore();
+                    firestore.addCustomer(customer);
                     // return back to launch screen
                     startActivity(new Intent(SignupActivity.this, LaunchActivity.class));
                 }else {
