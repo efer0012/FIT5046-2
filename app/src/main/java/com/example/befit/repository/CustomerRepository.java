@@ -69,16 +69,8 @@ public class CustomerRepository {
         });
     }
 
-    public Customer getCustomerByUid(String uid) {
-        return customerDao.getCustomerById(uid);
-    }
-
     public Customer getCustomerByEmail(String email){
         return customerDao.findCustomer(email);
-    }
-
-    public int getTotalCustomer(){
-        return customerDao.getTotalCustomer();
     }
 
     public CompletableFuture<Customer> findCustomerFuture(final String email) {

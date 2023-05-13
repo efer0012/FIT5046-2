@@ -34,9 +34,4 @@ public interface CustomerDao {
     @Query("DELETE FROM customer")
     void deleteAll();
 
-    @Query("SELECT * FROM customer WHERE email = :uid")
-    Customer getCustomerById(String uid);
-
-    @Query("SELECT COUNT(*) FROM customer")
-    int getTotalCustomer();
 }

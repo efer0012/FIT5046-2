@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         // upload all customers into Firestore
         firestore.upload(customerViewModel);
     }

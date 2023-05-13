@@ -48,15 +48,8 @@ public class CustomerViewModel extends AndroidViewModel {
         cRepository.updateCustomer(customer);
     }
 
-    public Customer getCustomerByUid(String uid) {
-        return cRepository.getCustomerByUid(uid);
-    }
-
     public Customer getCustomerByEmail(String email) {
         return cRepository.getCustomerByEmail(email);
     }
 
-    public int getTotalCustomer(){
-        return cRepository.getTotalCustomer();
-    }
 }

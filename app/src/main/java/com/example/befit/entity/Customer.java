@@ -20,7 +20,7 @@ public class Customer {
     @NonNull
     public String address;
     @NonNull
-    public double height; //TODO: need entry in sign up, or default 0?
+    public double height;
 
     public Customer(@NonNull String email,
                     @NonNull String firstName,

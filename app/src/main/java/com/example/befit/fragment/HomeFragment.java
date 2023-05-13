@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
     private ClassesViewModel classesViewModel;
     private BookingViewModel bookingViewModel;
 
-
     private HomeFragmentBinding addBinding;
     public HomeFragment(){}
     @Override
@@ -68,7 +67,7 @@ public class HomeFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.d("Customer DB", String.valueOf(customerViewModel.getTotalCustomer()));
+                //Log.d("Customer DB", String.valueOf(customerViewModel.getTotalCustomer()));
                 Customer currentCustomer = customerViewModel.getCustomerByEmail(dummyEmail);
                 if (currentCustomer != null) {
                     String firstName = currentCustomer.firstName;
