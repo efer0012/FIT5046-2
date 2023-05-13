@@ -21,6 +21,8 @@ import com.example.befit.entity.Customer;
 import com.example.befit.viewmodel.BookingViewModel;
 import com.example.befit.viewmodel.ClassesViewModel;
 import com.example.befit.viewmodel.CustomerViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,18 +60,18 @@ public class HomeFragment extends Fragment {
 
 
         // Set customer name from database
-        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //String custEmail = user.getEmail();
-        //Log.d("Customer Email", custEmail);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String custEmail = user.getEmail();
+        Log.d("Customer Email", custEmail);
         CustomerViewModel customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
 
-        String dummyEmail = "john.doe@example.com";
-        String customerEmail = dummyEmail;
+//        String dummyEmail = "john.doe@example.com";
+        String customerEmail = custEmail;
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Log.d("Customer DB", String.valueOf(customerViewModel.getTotalCustomer()));
-                Customer currentCustomer = customerViewModel.getCustomerByEmail(dummyEmail);
+                Customer currentCustomer = customerViewModel.getCustomerByEmail(customerEmail);
                 if (currentCustomer != null) {
                     String firstName = currentCustomer.firstName;
                     String lastName = currentCustomer.lastName;

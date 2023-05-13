@@ -19,6 +19,8 @@ import com.example.befit.entity.Classes;
 import com.example.befit.viewmodel.BookingViewModel;
 import com.example.befit.viewmodel.ClassesViewModel;
 import com.example.befit.viewmodel.CustomerViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,13 +47,13 @@ public class MyClassesFragment extends Fragment {
         View view = addBinding.getRoot();
 
         // Set customer name from database
-        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //String custEmail = user.getEmail();
-        //Log.d("Customer Email", custEmail);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String custEmail = user.getEmail();
+        Log.d("Customer Email", custEmail);
         CustomerViewModel customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
 
-        String dummyEmail = "john.doe@example.com";
-        String customerEmail = dummyEmail;
+        //String dummyEmail = "john.doe@example.com";
+        String customerEmail = custEmail;
 
         // Get current day and date
         // Get current date

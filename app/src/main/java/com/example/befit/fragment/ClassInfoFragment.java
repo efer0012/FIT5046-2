@@ -18,6 +18,8 @@ import com.example.befit.entity.Customer;
 import com.example.befit.viewmodel.BookingViewModel;
 import com.example.befit.viewmodel.ClassesViewModel;
 import com.example.befit.viewmodel.CustomerViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.checkerframework.common.returnsreceiver.qual.This;
 
@@ -83,11 +85,11 @@ public class ClassInfoFragment extends Fragment {
         }).start();
 
         //get customer from database
-        //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //String custEmail = user.getEmail();
-        //Log.d("Customer Email", custEmail);
-        String dummyEmail = "john.doe@example.com";
-        String customerEmail = dummyEmail;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String custEmail = user.getEmail();
+        Log.d("Customer Email", custEmail);
+        //String dummyEmail = "john.doe@example.com";
+        String customerEmail = custEmail;
 //        final Customer[] currentCustomer = new Customer[1];
 //        CustomerViewModel customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
 //        new Thread(new Runnable() {
