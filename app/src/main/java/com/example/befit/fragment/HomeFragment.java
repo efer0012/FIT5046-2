@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -12,12 +14,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.befit.R;
+import com.example.befit.RetrofitClient;
 import com.example.befit.RetrofitInterface;
 import com.example.befit.adapter.RecyclerViewAdapter;
+import com.example.befit.database.Firestore;
 import com.example.befit.databinding.HomeFragmentBinding;
 import com.example.befit.entity.Booking;
 import com.example.befit.entity.Classes;
 import com.example.befit.entity.Customer;
+import com.example.befit.model.WeatherResponse;
 import com.example.befit.viewmodel.BookingViewModel;
 import com.example.befit.viewmodel.ClassesViewModel;
 import com.example.befit.viewmodel.CustomerViewModel;
@@ -32,6 +38,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
@@ -57,34 +67,17 @@ public class HomeFragment extends Fragment {
         addBinding = HomeFragmentBinding.inflate(inflater, container, false);
         View view = addBinding.getRoot();
 
-
-        // Set customer name from database
+        // Set customer name from Firestore
+        Firestore firestore = new Firestore();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String custEmail = user.getEmail();
-        Log.d("Customer Email", custEmail);
-        CustomerViewModel customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
-
-//        String dummyEmail = "john.doe@example.com";
-        String customerEmail = custEmail;
-        new Thread(new Runnable() {
+        String customerEmail = user.getEmail();
+        firestore.retrieveCustomer(customerEmail, new Firestore.FirestoreCallback() {
             @Override
-            public void run() {
-                //Log.d("Customer DB", String.valueOf(customerViewModel.getTotalCustomer()));
-                Customer currentCustomer = customerViewModel.getCustomerByEmail(customerEmail);
-                if (currentCustomer != null) {
-                    String firstName = currentCustomer.firstName;
-                    String lastName = currentCustomer.lastName;
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addBinding.homeCustname.setText(firstName + " " + lastName);
-                        }
-                    });
-                } else {
-                    Log.e("HomeFragment", "Current customer is null");
-                }
+            public void onCallback(Customer customer) {
+                // set name
+                addBinding.homeCustname.setText(customer.firstName);
             }
-        }).start();
+        });
 
 
         // Get current day and date
@@ -95,43 +88,39 @@ public class HomeFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM", Locale.getDefault());
         String formattedDate = dateFormat.format(currentDate);
         addBinding.homeDayDate.setText(formattedDate);
-
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
         String today = dayFormat.format(currentDate);
 
-
         // Weather Retrofit
-//        retrofitInterface = RetrofitClient.getRetrofitService();
-//
-//        Call<WeatherResponse> callAsync =
-//                retrofitInterface.customSearch(API_KEY, location);
-//        Log.d("URL", callAsync.request().url().toString());
-//        //makes an async request & invokes callback methods when the response returns
-//        callAsync.enqueue(new Callback<WeatherResponse>() {
-//            @Override
-//            public void onResponse(Call<WeatherResponse> call,
-//                                   Response<WeatherResponse> response) {
-//                if (response.isSuccessful()) {
-//                    if (response.body() != null) {
-//                        //set weather text in home page
-//                        double temperature = response.body().getCurrent().getTemperature();
-//                        String temperatureFormatted = String.format("%.1f °C", temperature);
-//                        addBinding.homeTemperature.setText(temperatureFormatted);
-//                        addBinding.homeWeatherDesc.setText(response.body().getCurrent().getWeatherDescriptions().get(0));
-//                    } else {
-//                        Log.d("Weather", "Response body or current is null");
-//                    }
-//                }
-//                else {
-//                    Log.i("Error ","Response failed");
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<WeatherResponse> call, Throwable t){
-//                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-//                Log.d("ERROR", t.getMessage());
-//            }
-//        });
+        retrofitInterface = RetrofitClient.getRetrofitService();
+        Call<WeatherResponse> callAsync = retrofitInterface.customSearch(API_KEY, location);
+        Log.d("URL", callAsync.request().url().toString());
+        //makes an async request & invokes callback methods when the response returns
+        callAsync.enqueue(new Callback<WeatherResponse>() {
+            @Override
+            public void onResponse(Call<WeatherResponse> call,
+                                   Response<WeatherResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        //set weather text in home page
+                        double temperature = response.body().getCurrent().getTemperature();
+                        String temperatureFormatted = String.format("%.1f °C", temperature);
+                        addBinding.homeTemperature.setText(temperatureFormatted);
+                        addBinding.homeWeatherDesc.setText(response.body().getCurrent().getWeatherDescriptions().get(0));
+                    } else {
+                       Log.d("Weather", "Response body or current is null");
+                    }
+                }
+                else {
+                    Log.i("Error ","Response failed");
+                }
+            }
+            @Override
+            public void onFailure(Call<WeatherResponse> call, Throwable t){
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.d("ERROR", t.getMessage());
+            }
+        });
 
         //Recycle View
         // Get current time
