@@ -8,10 +8,17 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Constraints;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.befit.adapter.RecyclerViewAdapter;
 import com.example.befit.database.Firestore;
@@ -19,8 +26,10 @@ import com.example.befit.databinding.ActivityMainBinding;
 import com.example.befit.entity.Customer;
 import com.example.befit.model.BeFitClasses;
 import com.example.befit.viewmodel.CustomerViewModel;
+import com.example.befit.viewmodel.RecordViewModel;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        // create view model
-        customerViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(CustomerViewModel.class);
+        // create Firestore
+        Firestore firestore = new Firestore();
 
         setSupportActionBar(binding.appBar.toolbar); //app_bar_main
 
@@ -64,27 +73,35 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String email = intent.getStringExtra("email");
 
-        // get customer from Room
-        /*CompletableFuture<Customer> customerCompletableFuture = customerViewModel.findCustomerFuture(email);
-        customerCompletableFuture.thenApply(customer -> {
-            if (customer != null){
-                System.out.println("!!!!!!!!!!" + customer.toString());
-            } else {
-                System.out.println("!!!!!!!!!! FAIL !!!!!!!!!!");
-            }
-            return customer;
-        });*/
-
         // get customer from Firestore
-        Firestore firestore = new Firestore();
-        firestore.retrieve(email, new Firestore.FirestoreCallback() {
+        firestore.retrieveCustomer(email, new Firestore.FirestoreCallback() {
             @Override
             public void onCallback(Customer customer) {
-                System.out.println("!!!!!!!!!! " + customer.toString());
             }
         });
 
-        // upload all customers into Firestore
-        firestore.upload(customerViewModel);
+        // "start work" button
+        View headerview = binding.navView.getHeaderView(0);
+        Button workButton = headerview.findViewById(R.id.workmanagerButton);
+        workButton.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OneTimeWorkRequest oneTimeUploadRequest = new OneTimeWorkRequest
+                        .Builder(MyWorker.class)
+                        .build();
+                WorkManager.getInstance(getApplicationContext()).enqueue(oneTimeUploadRequest);
+                Log.d(MainActivity.class.getName(), "start working ...");
+            }
+        }));
+
+        // set up continuous work
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED) // Ensure network connectivity
+                .build();
+        PeriodicWorkRequest contUploadRequest = new PeriodicWorkRequest
+                .Builder(MyWorker.class, 1, TimeUnit.HOURS)
+                .setConstraints(constraints)
+                .build();
+        WorkManager.getInstance(getApplicationContext()).enqueue(contUploadRequest);
     }
 }

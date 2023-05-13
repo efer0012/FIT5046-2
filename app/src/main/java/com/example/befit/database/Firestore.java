@@ -3,13 +3,17 @@ package com.example.befit.database;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 
 import java.util.List;
 import java.util.Map;
 
 import com.example.befit.entity.Customer;
+import com.example.befit.entity.Record;
 import com.example.befit.viewmodel.CustomerViewModel;
+import com.example.befit.viewmodel.RecordViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,15 +29,15 @@ public class Firestore extends AppCompatActivity {
 
     //private static final ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(2, 4, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
-    public void upload(CustomerViewModel customerViewModel) {
+    public void uploadCustomer(CustomerViewModel customerViewModel) {
         // get all customers
         List<Customer> allCustomers = customerViewModel.getAll();
-            for (Customer c : allCustomers) {
-                add(c);
-            }
+        for (Customer c : allCustomers) {
+            addCustomer(c);
+        }
     }
 
-    public void add(Customer customer) {
+    public void addCustomer(Customer customer) {
         // set up Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
@@ -50,7 +54,7 @@ public class Firestore extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "!!!! Customer " + customer.email + " successfully written!");
+                        Log.d(TAG, "Customer :" + customer.email + " successfully written!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -62,7 +66,7 @@ public class Firestore extends AppCompatActivity {
     }
 
 
-    public void retrieve(String email, FirestoreCallback firestoreCallback){
+    public void retrieveCustomer(String email, FirestoreCallback firestoreCallback){
 
         // set up
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -71,7 +75,7 @@ public class Firestore extends AppCompatActivity {
                 .build();
         db.setFirestoreSettings(settings);
 
-//         get Customer
+        // get Customer
         DocumentReference customerRef = db.collection("customers").document(email);
         customerRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -80,7 +84,7 @@ public class Firestore extends AppCompatActivity {
                     DocumentSnapshot customerDoc = task.getResult();
                     if (customerDoc.exists()) {
                         Map<String, Object> customerData = customerDoc.getData();
-                        Log.d(TAG, "!!!! DocumentSnapshot data: " + customerData);
+                        Log.d(TAG, "DocumentSnapshot data: " + customerData);
                         Customer result = new Customer(
                                 customerDoc.getId(),
                                 (String) customerData.get("firstName"),
@@ -91,13 +95,53 @@ public class Firestore extends AppCompatActivity {
                                 (Double) customerData.get("height"));
                         firestoreCallback.onCallback(result);
                     } else {
-                        Log.d(TAG, "!!!! No such document");
+                        Log.d(TAG, "No such document: " + email);
                     }
                 } else {
-                    Log.d(TAG, "!!!! get failed with ", task.getException());
+                    Log.d(TAG, "Fail to get ", task.getException());
                 }
             }
         });
+    }
+
+    public void uploadRecord(RecordViewModel recordViewModel) {
+        // get all customers
+        /*LiveData<List<Record>> allRecords = recordViewModel.getAllRecords();
+        for (Record r : allRecords) {
+            addRecord(r);
+        }*/
+        recordViewModel.getAllRecords().observe(this, new Observer<List<Record>>() {
+            @Override
+            public void onChanged(@Nullable final List<Record> allRecords) {
+                for (Record r : allRecords) {
+                    addRecord(r);
+                }
+            };
+        });
+    }
+    public void addRecord(Record record) {
+        // set up Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build();
+        db.setFirestoreSettings(settings);
+
+        // add Record
+        db.collection("records")
+                .add(record)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "Record: " + record.toString() + " successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing " + record + e);
+                    }
+                });
     }
 
     public interface FirestoreCallback {
@@ -107,7 +151,7 @@ public class Firestore extends AppCompatActivity {
     public void getUserInfo(String email, final OnGetDataListener listener) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("customers").document(email);
-        ;
+
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
