@@ -50,7 +50,7 @@ public class ReportActivity extends AppCompatActivity {
                 DatePicker startDatePicker = findViewById(R.id.start_date_picker);
                 DatePicker endDatePicker = findViewById(R.id.end_date_picker);
 
-                // 获取开始日期
+                // Start Date
                 int startYear = startDatePicker.getYear();
                 int startMonth = startDatePicker.getMonth();
                 int startDay = startDatePicker.getDayOfMonth();
@@ -58,7 +58,7 @@ public class ReportActivity extends AppCompatActivity {
                 calendarStart.set(startYear, startMonth, startDay);
                 String startDate = startYear + "-" + (startMonth + 1) + "-" + startDay;
 
-                // 获取结束日期
+                // End Date
                 int endYear = endDatePicker.getYear();
                 int endMonth = endDatePicker.getMonth();
                 int endDay = endDatePicker.getDayOfMonth();
@@ -100,6 +100,18 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
 
+        Button backButton = findViewById(R.id.back_button);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private class GetWeightDataAsyncTask extends AsyncTask<String, Void, List<Record>> {
@@ -201,14 +213,6 @@ public class ReportActivity extends AppCompatActivity {
 
         lineChart.invalidate();
     }
-
-
-
-
-
-
-
-
 
 
 

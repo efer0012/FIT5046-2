@@ -67,17 +67,17 @@ public class GoalFragment extends Fragment {
         binding = GoalFragmentBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        // 获取SharedPreferences对象
+        // SharedPreferences
         sharedPreferences = requireActivity().getSharedPreferences("my_preferences", MODE_PRIVATE);
 
-        // 获取各个控件
+        // Get views
         datePicker = binding.datePicker;
         etHeight = binding.heightEdittext;
         etWeight = binding.weightEdittext;
 
 
 
-        // 设置DatePicker的初始日期为当前日期
+        // Set th current date
         Calendar calendar = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             calendar = Calendar.getInstance();
@@ -86,7 +86,7 @@ public class GoalFragment extends Fragment {
             datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), null);
         }
 
-        // 从SharedPreferences中读取身高和体重数据
+        // Get data SharedPreferences
         String height = sharedPreferences.getString("height", "");
         String weight = sharedPreferences.getString("weight", "");
         etHeight.setText(height);
@@ -100,7 +100,7 @@ public class GoalFragment extends Fragment {
         CustomerViewModel customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
 
 
-        // 获取保存数据的TextView
+        //
         tvSavedData = binding.savedDataTextView;
         recordViewModel = new ViewModelProvider(requireActivity()).get(RecordViewModel.class);
         recordViewModel.getCustomerRecords(custEmail).observe(getViewLifecycleOwner(), new Observer<List<Record>>() {
