@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.befit.adapter.RecyclerViewAdapter;
 import com.example.befit.database.Firestore;
@@ -27,6 +28,8 @@ import com.example.befit.entity.Customer;
 import com.example.befit.model.BeFitClasses;
 import com.example.befit.viewmodel.CustomerViewModel;
 import com.example.befit.viewmodel.RecordViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -79,6 +82,32 @@ public class MainActivity extends AppCompatActivity {
             public void onCallback(Customer customer) {
             }
         });
+
+        // Set customer name from database
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String custEmail = user.getEmail();
+        CustomerViewModel customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
+
+//        String dummyEmail = "john.doe@example.com";
+        String customerEmail = custEmail;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Customer currentCustomer = customerViewModel.getCustomerByEmail(customerEmail);
+                if (currentCustomer != null) {
+                    String firstName = currentCustomer.firstName;
+                    String lastName = currentCustomer.lastName;
+
+                    View headerview = binding.navView.getHeaderView(0);
+                    TextView custNameTextView = headerview.findViewById(R.id.nav_menu_custname);
+                    TextView custEmailTextView = headerview.findViewById(R.id.nav_menu_custemail);
+
+                    custNameTextView.setText(firstName + " " + lastName);
+                    custEmailTextView.setText(customerEmail);
+                }
+            }
+        }).start();
+
 
         // "start work" button
         View headerview = binding.navView.getHeaderView(0);

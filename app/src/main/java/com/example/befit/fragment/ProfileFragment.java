@@ -18,6 +18,7 @@ import com.example.befit.database.Firestore;
 import com.example.befit.entity.Customer;
 import com.firebase.ui.auth.data.model.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
@@ -90,8 +91,13 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        // Set customer name from database
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String custEmail = user.getEmail();
+        Log.d("Customer Email", custEmail);
+
         Firestore firestore = new Firestore();
-        firestore.getUserInfo("example@email.com", new Firestore.OnGetDataListener() {
+        firestore.getUserInfo(custEmail, new Firestore.OnGetDataListener() {
             @Override
             public void onSuccess(DocumentSnapshot document) {
                 if (document != null && document.exists()) {
