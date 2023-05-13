@@ -24,8 +24,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.befit.R;
 import com.example.befit.ReportActivity;
 import com.example.befit.databinding.GoalFragmentBinding;
+import com.example.befit.entity.Customer;
 import com.example.befit.entity.Record;
+import com.example.befit.viewmodel.CustomerViewModel;
 import com.example.befit.viewmodel.RecordViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -74,8 +78,13 @@ public class GoalFragment extends Fragment {
 
 
         // 设置DatePicker的初始日期为当前日期
-        Calendar calendar = Calendar.getInstance();
-        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), null);
+        Calendar calendar = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            calendar = Calendar.getInstance();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), null);
+        }
 
         // 从SharedPreferences中读取身高和体重数据
         String height = sharedPreferences.getString("height", "");
@@ -84,11 +93,17 @@ public class GoalFragment extends Fragment {
         etWeight.setText(weight);
 
 
+        // Set customer name from database
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String custEmail = user.getEmail();
+        Log.d("Customer Email", custEmail);
+        CustomerViewModel customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
+
 
         // 获取保存数据的TextView
         tvSavedData = binding.savedDataTextView;
         recordViewModel = new ViewModelProvider(requireActivity()).get(RecordViewModel.class);
-        recordViewModel.getAllRecords().observe(getViewLifecycleOwner(), new Observer<List<Record>>() {
+        recordViewModel.getCustomerRecords(custEmail).observe(getViewLifecycleOwner(), new Observer<List<Record>>() {
             @Override
             public void onChanged(List<Record> records) {
                 // Update UI
@@ -139,7 +154,7 @@ public class GoalFragment extends Fragment {
                 editor.apply();
 
                 // Room data
-                Record record = new Record(date, date_show, Float.parseFloat(height), Float.parseFloat(weight));
+                Record record = new Record(custEmail, date, date_show, Float.parseFloat(height), Float.parseFloat(weight));
                 recordViewModel.insert(record);
             }
         });
@@ -179,7 +194,7 @@ public class GoalFragment extends Fragment {
                 editor.apply();
 
                 // Room data
-                Record record = new Record(date, year + "-" + month + "-" + day, Float.parseFloat(height), Float.parseFloat(weight));
+                Record record = new Record(custEmail, date, year + "-" + month + "-" + day, Float.parseFloat(height), Float.parseFloat(weight));
                 recordViewModel.update(record);
             }
         });

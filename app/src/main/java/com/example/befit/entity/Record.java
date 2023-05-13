@@ -12,8 +12,10 @@ public class Record {
     public String date_show;
     public float height;
     public float weight;
+    public String customerEmail;
 
-    public Record(@NonNull long date, @NonNull String date_show, @NonNull float height, float weight) {
+    public Record(@NonNull String customerEmail, @NonNull long date, @NonNull String date_show, @NonNull float height, float weight) {
+        this.customerEmail = customerEmail;
         this.date=date;
         this.date_show=date_show;
         this.height=height;

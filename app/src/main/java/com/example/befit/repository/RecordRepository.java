@@ -29,6 +29,10 @@ public class RecordRepository {
         return allRecords;
     }
 
+    public LiveData<List<Record>> getCustomerRecords(String customerEmail) {
+        return recordDao.getCutsomerRecords(customerEmail);
+    }
+
     public void insert(Record record) {
         executorService.execute(new Runnable() {
             @Override

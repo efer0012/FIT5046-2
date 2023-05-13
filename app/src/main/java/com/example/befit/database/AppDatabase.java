@@ -19,7 +19,7 @@ import com.example.befit.model.BeFitClasses;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Customer.class, Classes.class, Booking.class, Record.class}, version = 6, exportSchema = false)
+@Database(entities = {Customer.class, Classes.class, Booking.class, Record.class}, version = 7, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract CustomerDao customerDao();
     public abstract ClassesDao classesDao();

@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -27,6 +28,8 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -100,13 +103,18 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private class GetWeightDataAsyncTask extends AsyncTask<String, Void, List<Record>> {
+
+        // Set customer name from database
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String custEmail = user.getEmail();
+
         @Override
         protected List<Record> doInBackground(String... params) {
             String startDate = params[0];
             String endDate = params[1];
 
             RecordDao recordDao = AppDatabase.getInstance(ReportActivity.this).recordDao();
-            return recordDao.getWeightsBetweenDates(startDate, endDate);
+            return recordDao.getWeightsBetweenDates(custEmail, startDate, endDate);
         }
 
         @Override
@@ -117,13 +125,18 @@ public class ReportActivity extends AppCompatActivity {
     }
 
     private class GetHeightDataAsyncTask extends AsyncTask<String, Void, List<Record>> {
+
+        // Set customer name from database
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String custEmail = user.getEmail();
+
         @Override
         protected List<Record> doInBackground(String... params) {
             String startDate = params[0];
             String endDate = params[1];
 
             RecordDao recordDao = AppDatabase.getInstance(ReportActivity.this).recordDao();
-            return recordDao.getWeightsBetweenDates(startDate, endDate);
+            return recordDao.getWeightsBetweenDates(custEmail, startDate, endDate);
         }
 
         @Override

@@ -30,6 +30,10 @@ public class RecordViewModel extends AndroidViewModel {
         return mAllRecords;
     }
 
+    public LiveData<List<Record>> getCustomerRecords(String customerEmail) {
+        return mRepository.getCustomerRecords(customerEmail);
+    }
+
     public void insert(Record record) {
         mRepository.insert(record);
     }

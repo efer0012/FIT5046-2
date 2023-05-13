@@ -29,5 +29,4 @@ public class Booking {
         this.bookingMadeDateTime = bookingMadeDateTime;
         this.bookingDayDateTime = bookingDayDateTime;
     }
-
 }
