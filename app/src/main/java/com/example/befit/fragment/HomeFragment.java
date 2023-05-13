@@ -219,8 +219,6 @@ public class HomeFragment extends Fragment {
                                         int currentTimeInMinutes = currentHour * 60 + currentMinute;
 
                                         // Compare the booked class time with the current time
-                                        Log.d("bookedClassStartTimeInMinutes", String.valueOf(bookedClassStartTimeInMinutes));
-                                        Log.d("currentTimeInMinutes", String.valueOf(currentTimeInMinutes));
                                         if (bookedClassStartTimeInMinutes > currentTimeInMinutes) {
                                             Log.d("debug", "Hello i am here");
                                             bookedClasses.add(bookedClass); //The booked class is scheduled to start after the current time
