@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Club_backgroundColor">
+
+    <TextView
+        android:id="@+id/tv_club_address_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:text="Club Address"
+        android:textColor="@color/Club_labelColor"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_club_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="20 Exhibition Walk, Clayton VIC 3168"
+        android:textColor="@color/Club_textColorGray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_club_address_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_club_address_label" />
+
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/club_map"
+        android:layout_width="350dp"
+        android:layout_height="190dp"
+        mapbox:mapbox_cameraTargetLat="40.73581"
+        mapbox:mapbox_cameraTargetLng="-73.99155"
+        app:layout_constraintStart_toStartOf="@+id/tv_club_address"
+        app:layout_constraintTop_toBottomOf="@+id/tv_club_address"
+        mapbox:mapbox_cameraZoom="11" />
+
+    <TextView
+        android:id="@+id/tv_club_contact_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Club Contact"
+        android:textColor="@color/Club_labelColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/club_map"
+        app:layout_constraintTop_toBottomOf="@+id/club_map" />
+
+    <TextView
+        android:id="@+id/tv_club_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="(03) 1234 5678"
+        android:textColor="@color/Club_valueColor"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_club_contact_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_club_contact_label" />
+
+    <View
+        android:id="@+id/view_separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/Club_textColorGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_club_contact" />
+
+    <TextView
+        android:id="@+id/tv_staffed_hours_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Staffed Hours"
+        android:textColor="@color/Club_labelColor"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_club_contact"
+        app:layout_constraintTop_toBottomOf="@+id/view_separator" />
+
+    <TextView
+        android:id="@+id/tv_weekday_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Weekday  7:00AM - 10:00PM"
+        android:textColor="@color/Club_valueColor"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_staffed_hours_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_staffed_hours_label" />
+
+    <TextView
+        android:id="@+id/tv_saturday_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Saturday  9:00AM - 11:00AM"
+        android:textColor="@color/Club_valueColor"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_weekday_hours"
+        app:layout_constraintTop_toBottomOf="@+id/tv_weekday_hours" />
+
+    <TextView
+        android:id="@+id/tv_sunday_hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:text="Sunday     9:00AM -   8:00PM"
+        android:textColor="@color/Club_valueColor"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_saturday_hours"
+        app:layout_constraintTop_toBottomOf="@+id/tv_saturday_hours" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

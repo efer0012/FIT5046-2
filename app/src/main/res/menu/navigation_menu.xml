@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item
+        android:id="@+id/nav_home_fragment"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_club_fragment"
+        android:title="Club" />
+    <item
+        android:id="@+id/nav_book_classes_fragment"
+        android:title="Book Classes" />
+    <item
+        android:id="@+id/nav_my_classes_fragment"
+        android:title="My Classes" />
+    <item
+        android:id="@+id/nav_goal_fragment"
+        android:title="Track Fitness Goal" />
+    <item
+        android:id="@+id/nav_profile_fragment"
+        android:title="Profile" />
+</menu>

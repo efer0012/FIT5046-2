@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_home_fragment">
+
+    <!--    <fragment-->
+    <!--        android:id="@+id/nav_home_fragment"-->
+    <!--        android:name="com.example.befit.fragment.HomeFragment"-->
+    <!--        android:label="Home" />-->
+    <fragment
+        android:id="@+id/nav_home_fragment"
+        android:name="com.example.befit.fragment.HomeFragment"
+        android:label="Home">
+        <action
+            android:id="@+id/action_to_classInfoFragment"
+            app:destination="@id/class_info_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_club_fragment"
+        android:name="com.example.befit.fragment.ClubFragment"
+        android:label="Club" />
+    <fragment
+        android:id="@+id/nav_book_classes_fragment"
+        android:name="com.example.befit.fragment.BookClassesFragment"
+        android:label="Book Classes">
+        <action
+            android:id="@+id/action_to_classInfoFragment"
+            app:destination="@id/class_info_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_my_classes_fragment"
+        android:name="com.example.befit.fragment.MyClassesFragment"
+        android:label="My Classes">
+        <action
+            android:id="@+id/action_to_classInfoFragment"
+            app:destination="@id/class_info_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_goal_fragment"
+        android:name="com.example.befit.fragment.GoalFragment"
+        android:label="Track Fitness Goal" />
+    <fragment
+        android:id="@+id/nav_profile_fragment"
+        android:name="com.example.befit.fragment.ProfileFragment"
+        android:label="Profile" />
+    <fragment
+        android:id="@+id/class_info_fragment"
+        android:name="com.example.befit.fragment.ClassInfoFragment"
+        android:label="Class Information" />
+</navigation>

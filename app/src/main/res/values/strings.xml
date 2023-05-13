@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BeFiT</string>
+    <string name="mapbox_access_token">pk.eyJ1IjoiZG9vbzIwMDAiLCJhIjoiY2xoN28xeW1xMDBmejNmbGQzYm94Nm5iYSJ9.gSkBIWOUHR3bnhHQmaMCiw</string>
+</resources>
