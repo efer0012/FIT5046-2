@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">BeFiT</string>
     <string name="mapbox_access_token">pk.eyJ1IjoiZG9vbzIwMDAiLCJhIjoiY2xoN28xeW1xMDBmejNmbGQzYm94Nm5iYSJ9.gSkBIWOUHR3bnhHQmaMCiw</string>
+    <string name="facebook_app_id">556436083228362</string>
+    <string name="fb_login_protocol_scheme">fb556436083228362</string>
+    <string name="facebook_client_token">dc240ce634825f09a0adfe94c0d30bb9</string>
 </resources>
