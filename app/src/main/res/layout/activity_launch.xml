@@ -20,12 +20,4 @@
         android:text="SIGN UP"
         android:layout_below="@+id/loginButton"
         android:layout_centerInParent="true" />
-    <!-- debug TODO:delete -->
-    <Button
-        android:id="@+id/debugButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Debug"
-        android:layout_below="@+id/signupButton"
-        android:layout_centerInParent="true" />
 </RelativeLayout>

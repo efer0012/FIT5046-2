@@ -30,12 +30,5 @@ public class LaunchActivity extends AppCompatActivity {
                 startActivity(new Intent(LaunchActivity.this, LoginActivity.class));
             }
         });
-        Button debugButton = findViewById(R.id.debugButton);
-        debugButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LaunchActivity.this, MainActivity.class));
-            }
-        });
     }
 }
