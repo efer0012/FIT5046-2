@@ -72,42 +72,6 @@ public class MainActivity extends AppCompatActivity {
         //Sets up a Toolbar for use with a NavController.
         NavigationUI.setupWithNavController(binding.appBar.toolbar,navController, mAppBarConfiguration);
 
-        // get customer's email from LoginActivity
-        Intent intent = getIntent();
-        String email = intent.getStringExtra("email");
-
-        // get customer from Firestore
-        firestore.retrieveCustomer(email, new Firestore.FirestoreCallback() {
-            @Override
-            public void onCallback(Customer customer) {
-            }
-        });
-
-        // Set customer name from database
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String custEmail = user.getEmail();
-        CustomerViewModel customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
-
-//        String dummyEmail = "john.doe@example.com";
-        String customerEmail = custEmail;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Customer currentCustomer = customerViewModel.getCustomerByEmail(customerEmail);
-                if (currentCustomer != null) {
-                    String firstName = currentCustomer.firstName;
-                    String lastName = currentCustomer.lastName;
-
-                    View headerview = binding.navView.getHeaderView(0);
-                    TextView custNameTextView = headerview.findViewById(R.id.nav_menu_custname);
-                    TextView custEmailTextView = headerview.findViewById(R.id.nav_menu_custemail);
-
-                    custNameTextView.setText(firstName + " " + lastName);
-                    custEmailTextView.setText(customerEmail);
-                }
-            }
-        }).start();
-
 
         // "start work" button
         View headerview = binding.navView.getHeaderView(0);
@@ -132,5 +96,43 @@ public class MainActivity extends AppCompatActivity {
                 .setConstraints(constraints)
                 .build();
         WorkManager.getInstance(getApplicationContext()).enqueue(contUploadRequest);
+
+
+        // get customer's email from LoginActivity
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+
+        // get customer from Firestore
+        firestore.retrieveCustomer(email, new Firestore.FirestoreCallback() {
+            @Override
+            public void onCallback(Customer customer) {
+                // set name and email in Navi header
+                TextView nameTextView = headerview.findViewById(R.id.nav_menu_custname);
+                nameTextView.setText(customer.firstName + " " + customer.lastName);
+                TextView emailTextView = headerview.findViewById(R.id.nav_menu_custemail);
+                emailTextView.setText(email);
+            }
+        });
+        // Set customer name from database
+        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String custEmail = user.getEmail();
+        CustomerViewModel customerViewModel = new ViewModelProvider(this).get(CustomerViewModel.class);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Customer currentCustomer = customerViewModel.getCustomerByEmail(customerEmail);
+                if (currentCustomer != null) {
+                    String firstName = currentCustomer.firstName;
+                    String lastName = currentCustomer.lastName;
+
+                    View headerview = binding.navView.getHeaderView(0);
+                    TextView custNameTextView = headerview.findViewById(R.id.nav_menu_custname);
+                    TextView custEmailTextView = headerview.findViewById(R.id.nav_menu_custemail);
+
+                    custNameTextView.setText(firstName + " " + lastName);
+                    custEmailTextView.setText(customerEmail);
+                }
+            }
+        }).start();*/
     }
 }
