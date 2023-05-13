@@ -58,7 +58,6 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Firestore firestore = new Firestore();
         Mapbox.getInstance(requireContext(), getString(R.string.mapbox_access_token));
     }
 
@@ -152,7 +151,7 @@ public class ProfileFragment extends Fragment implements OnMapReadyCallback {
                     // Use latitude and longitude here
                     Timber.tag(TAG).d("Latitude: " + latitude + ", Longitude: " + longitude);
 
-                    // 在这里设置相机的目标位置
+
                     CameraPosition position = new CameraPosition.Builder()
                             .target(new LatLng(latitude, longitude))
                             .zoom(15)

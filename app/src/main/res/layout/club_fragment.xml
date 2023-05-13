@@ -11,7 +11,7 @@
         android:id="@+id/tv_club_address_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
         android:text="Club Address"
         android:textColor="@color/Club_labelColor"
@@ -69,7 +69,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/Club_textColorGray"
+        android:background="@color/design_default_color_primary_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_club_contact" />

@@ -141,7 +141,7 @@ public class ClubFragment extends Fragment {
 
                             CameraPosition position = new CameraPosition.Builder()
                                     .target(new LatLng(latitude, longitude))
-                                    .zoom(11)
+                                    .zoom(15)
                                     .build();
                             mapboxMap.setCameraPosition(position);
                         }
