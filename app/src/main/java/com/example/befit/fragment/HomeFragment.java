@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCallback(Customer customer) {
                 // set name
-                addBinding.homeCustname.setText(customer.firstName);
+                addBinding.homeCustname.setText(customer.firstName + " " + customer.lastName);
             }
         });
 
