@@ -89,9 +89,9 @@ public class Firestore extends AppCompatActivity {
                                 customerDoc.getId(),
                                 (String) customerData.get("firstName"),
                                 (String)customerData.get("lastName"),
-                                (String)customerData.get("address"),
                                 (String)customerData.get("gender"),
                                 (String)customerData.get("dateOfBirth"),
+                                (String)customerData.get("address"),
                                 (Double) customerData.get("height"));
                         firestoreCallback.onCallback(result);
                     } else {

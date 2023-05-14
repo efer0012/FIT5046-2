@@ -27,6 +27,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 public class SignupActivity extends AppCompatActivity {
@@ -49,13 +51,16 @@ public class SignupActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // current date
+        /*LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = currentDate.format(formatter);*/
+
         auth = FirebaseAuth.getInstance();
         EditText emailEditText= findViewById(R.id.emailEditText);
         EditText passwordEditText= findViewById(R.id.passwordEditText);
         EditText firstNameEditText= findViewById(R.id.firstNameEditText);
-        //first_name = firstNameEditText.getText().toString();
         EditText lastNameEditText= findViewById(R.id.lastNameEditText);
-        //last_name = lastNameEditText.getText().toString();
 
         String[] genderOption = {"Male", "Female", "Other"};
         final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this ,android.R.layout.simple_spinner_item, genderOption);

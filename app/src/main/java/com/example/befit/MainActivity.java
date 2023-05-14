@@ -95,11 +95,10 @@ public class MainActivity extends AppCompatActivity {
                 .setRequiredNetworkType(NetworkType.CONNECTED) // Ensure network connectivity
                 .build();
         PeriodicWorkRequest contUploadRequest = new PeriodicWorkRequest
-                .Builder(MyWorker.class, 1, TimeUnit.HOURS)
+                .Builder(MyWorker.class, 24, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build();
         WorkManager.getInstance(getApplicationContext()).enqueue(contUploadRequest);
-
 
         // get customer's email from LoginActivity
         Intent intent = getIntent();
@@ -110,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCallback(Customer customer) {
                 // add into Room database
-                customerViewModel.insertCustomer(customer);
+                if (customerViewModel.getCustomerByEmail(email) == null)
+                    customerViewModel.insertCustomer(customer);
                 // set name and email in Navi header
                 TextView nameTextView = headerview.findViewById(R.id.nav_menu_custname);
                 nameTextView.setText(customer.firstName + " " + customer.lastName);
