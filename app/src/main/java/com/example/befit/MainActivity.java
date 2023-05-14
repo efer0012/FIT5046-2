@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         // create Firestore
         Firestore firestore = new Firestore();
 
+        // create View model
+        customerViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(CustomerViewModel.class);
+
         setSupportActionBar(binding.appBar.toolbar); //app_bar_main
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -106,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
         firestore.retrieveCustomer(email, new Firestore.FirestoreCallback() {
             @Override
             public void onCallback(Customer customer) {
+                // add into Room database
+                customerViewModel.insertCustomer(customer);
                 // set name and email in Navi header
                 TextView nameTextView = headerview.findViewById(R.id.nav_menu_custname);
                 nameTextView.setText(customer.firstName + " " + customer.lastName);
