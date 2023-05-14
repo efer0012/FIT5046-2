@@ -26,6 +26,9 @@ public interface RecordDao {
     @Query("SELECT * FROM record")
     LiveData<List<Record>> getAllRecords();
 
+    @Query("SELECT * FROM record")
+    List<Record> getAll();
+
     @Query("SELECT * FROM record WHERE customerEmail = :customerEmail")
     LiveData<List<Record>> getCutsomerRecords(String customerEmail);
 

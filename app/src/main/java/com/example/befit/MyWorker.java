@@ -8,9 +8,10 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.example.befit.database.AppDatabase;
-import com.example.befit.entity.Customer;
+import com.example.befit.entity.Record;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
@@ -41,14 +42,15 @@ public class MyWorker extends Worker {
                 .setPersistenceEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
-        // get all customers
-        List<Customer> allCustomers = roomDb.customerDao().getAll();
+        // get all record
+        List<Record> allRecords = roomDb.recordDao().getAll();
+        // upload record
         try {
             // Create a batched write operation
             WriteBatch batch = db.batch();
-            for (Customer c : allCustomers) {
-                DocumentReference customerRef = db.collection("customers").document(c.email);
-                batch.set(customerRef, c);
+            for (Record r : allRecords) {
+                DocumentReference recordRef = db.collection("records").document();
+                batch.set(recordRef, r);
             }
             // Commit the batched write operation
             batch.commit()

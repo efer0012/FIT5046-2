@@ -2,11 +2,8 @@ package com.example.befit.repository;
 
 import android.app.Application;
 import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Database;
 
 import com.example.befit.dao.RecordDao;
-import com.example.befit.database.AppDatabase;
 import com.example.befit.database.AppDatabase;
 import com.example.befit.entity.Record;
 import java.util.List;
@@ -15,17 +12,23 @@ import java.util.concurrent.Executors;
 
 public class RecordRepository {
     private RecordDao recordDao;
-    private LiveData<List<Record>> allRecords;
+    private LiveData<List<Record>> allLiveRecords;
+    private List<Record> allRecords;
     private ExecutorService executorService;
 
     public RecordRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
         recordDao = database.recordDao();
-        allRecords = recordDao.getAllRecords();
+        allLiveRecords = recordDao.getAllRecords();
+        allRecords = recordDao.getAll();
         executorService = Executors.newSingleThreadExecutor();
     }
 
     public LiveData<List<Record>> getAllRecords() {
+        return allLiveRecords;
+    }
+
+    public List<Record> getAll() {
         return allRecords;
     }
 
